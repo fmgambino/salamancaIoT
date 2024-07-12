@@ -7,9 +7,9 @@
 ![version](https://img.shields.io/badge/version-1.0.0-blue.svg?longCache=true&style=flat-square)
 ![license](https://img.shields.io/badge/license-MIT-green.svg?longCache=true&style=flat-square)
 
-# Dispositivo para el Control y Monitoreo de Variables Multiparamétricas para Salamancas
+# Dispositivo de Control y Monitoreo de Variables Multiparamétricas para Salamancas
 
-Este proyecto está diseñado para el control y monitoreo de variables multiparamétricas en Salamancas, utilizando el microcontrolador ESP32. El dispositivo es capaz de recolectar y transmitir datos de diferentes sensores para facilitar el análisis en tiempo real.
+Este proyecto está diseñado de control y monitoreo de variables multiparamétricas en Salamancas, utilizando el microcontrolador ESP32. El dispositivo es capaz de recolectar y transmitir datos de diferentes sensores para facilitar el análisis en tiempo real.
 
 ## Requisitos
 

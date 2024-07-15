@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Web Server</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ESP32 Web Server</h1>
+            <nav>
+                <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                <label for="menu-toggle" class="menu-icon">&#9776;</label>
+                <ul class="menu">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Acerca de</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="content">
+                <h2>Bienvenido al servidor web ESP32</h2>
+                <p>Este es un ejemplo de cómo puedes mejorar el diseño de tu aplicación web en ESP32. A continuación, se muestran los datos del sensor:</p>
+                <div class="sensor-data">
+                    <p><i class="fas fa-thermometer-half"></i> Temperatura: <span id="temperature">--</span> °C</p>
+                    <p><i class="fas fa-tint"></i> Humedad: <span id="humidity">--</span> %</p>
+                </div>
+                <button id="mode-toggle">Cambiar a Modo Oscuro</button>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>2024 © NUNTIUS All rights reserved - Developed by <a href='https://electronicagambino.com' target='_blank'>Electrónica Gambino</a></p>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>

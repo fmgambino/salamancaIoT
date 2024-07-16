@@ -17,11 +17,6 @@
 const char* ssid = "JUAREZ";
 const char* password = "CAROLINA342";
 
-// Configuración de IP fija
-IPAddress local_IP(192, 168, 1, 184);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 255, 0);
-
 // Inicialización del servidor web y los sensores
 WebServer server(80);
 DHT dht(DHTPIN, DHTTYPE);
@@ -36,11 +31,7 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  // Conexión a la red WiFi con IP fija
-  if (!WiFi.config(local_IP, gateway, subnet)) {
-    Serial.println("Error al configurar la IP estática");
-  }
-
+  // Conexión a la red WiFi
   Serial.println();
   Serial.print("Conectando a ");
   Serial.println(ssid);
@@ -108,18 +99,18 @@ void setup() {
   });
   
   // Ruta para obtener datos del sensor DHT22
-  server.on("/dht22", HTTP_GET, []() {
-    float humidity = dht.readHumidity();
-    float temperature = dht.readTemperature();
-    if (isnan(humidity) || isnan(temperature)) {
-        Serial.println("Error al leer el sensor DHT22");
-        server.send(500, "application/json", "{\"error\":\"Error al leer el sensor DHT22\"}");
-    } else {
-        Serial.println("Datos del sensor DHT22 obtenidos correctamente");
-        String json = "{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + "}";
-        server.send(200, "application/json", json);
-    }
-  });
+    server.on("/dht22", HTTP_GET, []() {
+        float humidity = dht.readHumidity();
+        float temperature = dht.readTemperature();
+        if (isnan(humidity) || isnan(temperature)) {
+            Serial.println("Error al leer el sensor DHT22");
+            server.send(500, "application/json", "{\"error\":\"Error al leer el sensor DHT22\"}");
+        } else {
+            Serial.println("Datos del sensor DHT22 obtenidos correctamente");
+            String json = "{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + "}";
+            server.send(200, "application/json", json);
+        }
+    });
 
   // Ruta para obtener datos del sensor DS18B20
   server.on("/ds18b20", HTTP_GET, []() {

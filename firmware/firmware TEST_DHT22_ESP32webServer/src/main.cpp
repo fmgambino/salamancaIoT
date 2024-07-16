@@ -4,24 +4,43 @@
 #include <SPIFFS.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
-// Definición de los pines y tipo de sensor DHT
+// Definición de los pines y tipo de sensor DHT y DS18B20
 #define DHTPIN 4
 #define DHTTYPE DHT22
+#define ONE_WIRE_BUS 2
+#define BATTERY_PIN 34  // Pin analógico para la batería
 
 // Credenciales de la red WiFi
 const char* ssid = "JUAREZ";
 const char* password = "CAROLINA342";
 
-// Inicialización del servidor web y el sensor DHT
+// Configuración de IP fija
+IPAddress local_IP(192, 168, 1, 184);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+
+// Inicialización del servidor web y los sensores
 WebServer server(80);
 DHT dht(DHTPIN, DHTTYPE);
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature ds18b20(&oneWire);
+
+// Variables para los sensores MQ
+int mq135Pin = 34;
+int mq9Pin = 35;
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  // Conexión a la red WiFi
+  // Conexión a la red WiFi con IP fija
+  if (!WiFi.config(local_IP, gateway, subnet)) {
+    Serial.println("Error al configurar la IP estática");
+  }
+
   Serial.println();
   Serial.print("Conectando a ");
   Serial.println(ssid);
@@ -42,30 +61,6 @@ void setup() {
   if (!SPIFFS.begin(true)) {
     Serial.println("Error al montar SPIFFS");
     return;
-  }
-
-  // Lectura y impresión del contenido de text.txt en el monitor serial
-  File file = SPIFFS.open("/text.txt", "r");
-  if (!file) {
-    Serial.println("Error al abrir el archivo text.txt");
-  } else {
-    Serial.println("Contenido de text.txt:");
-    while (file.available()) {
-      Serial.write(file.read());
-    }
-    file.close();
-  }
-
-  // Lectura y impresión del contenido de index.html en el monitor serial
-  file = SPIFFS.open("/index.html", "r");
-  if (!file) {
-    Serial.println("Error al abrir el archivo index.html");
-  } else {
-    Serial.println("\nContenido de index.html:");
-    while (file.available()) {
-      Serial.write(file.read());
-    }
-    file.close();
   }
 
   // Configuración del servidor para servir archivos estáticos
@@ -99,39 +94,67 @@ void setup() {
     file.close();
   });
 
-  // Ruta para servir el contenido de text.txt
-  server.on("/text.txt", HTTP_GET, []() {
-    if (!SPIFFS.exists("/text.txt")) {
-      server.send(404, "text/plain", "Archivo no encontrado");
-      return;
-    }
-    File file = SPIFFS.open("/text.txt", "r");
-    if (!file) {
-      server.send(500, "text/plain", "Error interno del servidor");
-      return;
-    }
-    server.streamFile(file, "text/plain");
-    file.close();
-  });
+  // Ruta para obtener el nivel de batería
+  server.on("/battery", HTTP_GET, []() {
+    int analogValue = analogRead(BATTERY_PIN);
+    float voltage = analogValue * (3.3 / 4095.0); // Convertir el valor analógico a voltaje
+    int batteryLevel = map(voltage * 1000, 3000, 4200, 0, 100); // Asumiendo una batería de 3.0V a 4.2V
 
+    if (batteryLevel > 100) batteryLevel = 100;
+    if (batteryLevel < 0) batteryLevel = 0;
+
+    String json = "{\"battery\":" + String(batteryLevel) + "}";
+    server.send(200, "application/json", json);
+  });
+  
   // Ruta para obtener datos del sensor DHT22
   server.on("/dht22", HTTP_GET, []() {
     float humidity = dht.readHumidity();
     float temperature = dht.readTemperature();
     if (isnan(humidity) || isnan(temperature)) {
-      Serial.println("Error al leer el sensor DHT22");
-      server.send(500, "application/json", "{\"error\":\"Error al leer el sensor DHT22\"}");
+        Serial.println("Error al leer el sensor DHT22");
+        server.send(500, "application/json", "{\"error\":\"Error al leer el sensor DHT22\"}");
     } else {
-      Serial.println("Datos del sensor DHT22 obtenidos correctamente");
-      String json = "{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + "}";
+        Serial.println("Datos del sensor DHT22 obtenidos correctamente");
+        String json = "{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + "}";
+        server.send(200, "application/json", json);
+    }
+  });
+
+  // Ruta para obtener datos del sensor DS18B20
+  server.on("/ds18b20", HTTP_GET, []() {
+    ds18b20.requestTemperatures();
+    float temperature = ds18b20.getTempCByIndex(0);
+    if (temperature == DEVICE_DISCONNECTED_C) {
+      Serial.println("Error al leer el sensor DS18B20");
+      server.send(500, "application/json", "{\"error\":\"Error al leer el sensor DS18B20\"}");
+    } else {
+      Serial.println("Datos del sensor DS18B20 obtenidos correctamente");
+      String json = "{\"temperature\":" + String(temperature) + "}";
       server.send(200, "application/json", json);
     }
+  });
+
+  // Ruta para obtener datos del sensor MQ-135
+  server.on("/mq135", HTTP_GET, []() {
+    int airQualityPPM = analogRead(mq135Pin);
+    int airQualityCO2 = analogRead(mq135Pin); // Aquí puedes ajustar para el CO2 si tienes otra lectura
+    String json = "{\"air_quality_ppm\":" + String(airQualityPPM) + ",\"air_quality_co2\":" + String(airQualityCO2) + "}";
+    server.send(200, "application/json", json);
+  });
+
+  // Ruta para obtener datos del sensor MQ-9
+  server.on("/mq9", HTTP_GET, []() {
+    int coLevel = analogRead(mq9Pin);
+    String json = "{\"co_level\":" + String(coLevel) + "}";
+    server.send(200, "application/json", json);
   });
 
   server.begin();
   
   Serial.println("Servidor HTTP iniciado");
   dht.begin();
+  ds18b20.begin();
 }
 
 void loop() {

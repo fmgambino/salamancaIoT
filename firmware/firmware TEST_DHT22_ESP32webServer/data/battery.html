@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batería horizontal</title>
+    <style>
+        /* Estilos CSS */
+        .contenedor-bateria {
+            width: 220px;
+            height: 40px;
+            background-color: #ddd;
+            border-radius: 10px 5px 0 10px; /* Forma de batería con lado chato y positivo */
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para mayor realismo */
+        }
+
+        .nivel-bateria {
+            height: 80%; /* Ajustar altura del nivel de carga */
+            background-image: linear-gradient(to right, #4f4f4f 0%, #666 25%, #8c8c8c 50%, #b3b3b3 75%, #ddd 100%); /* Degradado gris */
+            transition: width 0.5s ease;
+        }
+
+        .porcentaje {
+            margin-left: 10px;
+            font-weight: bold;
+            color: #fff; /* Texto blanco para mejor contraste */
+        }
+
+        .terminal-positivo {
+            width: 10px;
+            height: 10px;
+            background-color: #000;
+            border-radius: 50%;
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .contenedor-contactos {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .contacto {
+            width: 2px;
+            height: 10px;
+            background-color: #000;
+            margin-right: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-bateria">
+        <div class="nivel-bateria" style="width: 60%"></div> <span class="porcentaje">60%</span>
+        <div class="contenedor-contactos">
+            <div class="contacto"></div>
+            <div class="contacto"></div>
+            <div class="contacto"></div>
+        </div>
+        <div class="terminal-positivo"></div>
+    </div>
+</body>
+</html>

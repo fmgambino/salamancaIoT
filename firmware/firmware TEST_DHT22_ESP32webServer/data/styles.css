@@ -1,38 +1,74 @@
-/* Reset de estilos y estilos globales */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* Estilos generales */
 body {
   font-family: Arial, sans-serif;
-  line-height: 1.6;
-  background-color: #f0f0f0;
-  color: #333333;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.container {
-  width: 80%;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Estilos del encabezado */
 header {
-  background-color: #007bff;
-  color: #ffffff;
-  padding: 10px 0;
-}
-
-header .container {
+  background-color: #f0f0f0;
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
-header h1 {
-  font-size: 2rem;
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+  margin-right: 20px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
 }
 
 nav {
@@ -40,177 +76,292 @@ nav {
   align-items: center;
 }
 
-.menu-toggle {
-  display: none;
+.nav-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-menu li {
+  margin-left: 20px;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s;
+}
+
+.nav-menu li a:hover {
+  color: #777;
 }
 
 .menu-icon {
-  font-size: 1.5rem;
-  cursor: pointer;
   display: none;
-}
-
-nav ul {
-  list-style-type: none;
-  display: flex;
-}
-
-nav ul li {
-  margin-right: 20px;
-}
-
-nav ul li a {
-  color: #ffffff;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-nav ul li a:hover {
-  color: #f8f9fa;
-}
-
-/* Estilos del contenido principal */
-main {
-  padding: 20px 0;
-}
-
-section.content {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-section.content.light-mode {
-  background-color: #ffffff;
-  color: #333333;
-}
-
-section.content.dark-mode {
-  background-color: #1b263b; /* Dark Blue */
-  color: #ffffff;
-}
-
-section h2 {
-  color: #007bff;
-  margin-bottom: 10px;
-}
-
-section.content.dark-mode h2 {
-  color: #ffa500; /* Orange */
-}
-
-.sensor-data {
-  margin-bottom: 20px;
-}
-
-.sensor-data p {
-  display: flex;
-  align-items: center;
-}
-
-.sensor-data i {
-  margin-right: 10px;
-}
-
-.sensor-data.dark-mode p {
-  color: #ffffff;
-}
-
-button#mode-toggle {
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
+  font-size: 24px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 20px; /* Bordado redondeado */
-  outline: none; /* Quita el borde predeterminado */
-  font-size: 1rem; /* Tamaño de fuente */
 }
 
-button#mode-toggle:hover {
-  background-color: #0056b3;
+/* Estilos para modo oscuro */
+.dark-theme {
+  background-color: #121212;
+  color: #fff;
 }
 
-/* Estilos del pie de página */
-footer {
-  background-color: #343a40;
-  color: #ffffff;
-  text-align: center;
-  padding: 10px 0;
-  margin-top: 20px;
+.dark-theme header {
+  background-color: #333;
 }
 
-footer p {
-  font-size: 0.9rem;
+.dark-theme .nav-menu li a {
+  color: #fff; /* Cambio de color del texto del menú en modo oscuro */
 }
 
-footer a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: bold;
+.dark-theme .sensor-data {
+  background-color: #212121;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
 }
 
-footer a:hover {
-  text-decoration: underline;
+.dark-theme .sensor-data:nth-child(odd),
+.dark-theme .sensor-data:nth-child(even) {
+  background-color: #333; /* Color oscuro para todos los sensores en modo oscuro */
 }
 
-/* Estilos para diseño responsivo */
-@media screen and (max-width: 768px) {
-  .container {
-      width: 90%;
+/* Estilos específicos para cada sensor */
+.sensor-data {
+  background-color: #f0f0f0; /* Color claro para sensores en modo claro */
+  color: #333;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  flex: 1 1 calc(25% - 20px); /* Ajuste para el ancho de cada sensor, 4 sensores por fila */
+  max-width: calc(25% - 20px); /* Máximo ancho para 4 sensores por fila */
+  box-sizing: border-box; /* Incluye el padding y el border en el ancho total */
+}
+
+.sensor-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Ajusta el espacio entre los sensores */
+}
+
+@media (max-width: 768px) {
+  .header-right {
+      flex-direction: column;
+      align-items: flex-start;
+
+  }
+
+  .nav-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 76px;
+      left: 0px;
+      background-color: #333;
+      padding: 10px;
+      border-radius: 0px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: calc(100%);
+  }
+
+  .nav-menu.active {
+      display: flex;
   }
 
   .menu-icon {
       display: block;
+      font-size: 24px;
+      cursor: pointer;
   }
 
-  nav ul {
+  .sensor-data {
+      flex: 1 1 calc(100% - 20px); /* Ocupar ancho completo en dispositivos móviles */
+      max-width: calc(100% - 20px); /* Máximo ancho en dispositivos móviles */
+      margin: 10px;
+  }
+}
+
+@media (min-width: 769px) {
+  .menu-icon {
       display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 60px;
-      left: 0;
-      width: 100%;
-      background-color: #007bff;
-      padding: 10px 0;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      z-index: 1;
   }
 
-  nav ul.active {
-      display: flex;
+  .nav-menu {
+      display: flex !important; /* Asegura que el menú esté visible en escritorio */
+      position: static;
+      background-color: transparent;
+      padding: 0;
   }
 
-  nav ul li {
-      margin: 10px 0;
+  .nav-menu li {
+      margin-left: 30px; /* Espacio entre elementos del menú en escritorio */
   }
 
-  nav ul li a {
-      color: #ffffff;
-      text-decoration: none;
-      padding: 10px 20px;
-      display: block;
-      transition: background-color 0.3s ease;
+  .sensor-data {
+      flex: 1 1 calc(25% - 20px); /* Ajuste para el ancho de cada sensor, 4 sensores por fila */
+      max-width: calc(25% - 20px); /* Máximo ancho para 4 sensores por fila */
+      margin: 10px;
   }
 
-  nav ul li a:hover {
-      background-color: #0056b3;
-  }
-
-  input.menu-toggle:checked ~ ul {
-      display: flex;
+  .dark-theme .nav-menu li a {
+      color: #fff; /* Cambio de color del texto del menú en modo oscuro */
   }
 }
 
-.light-mode {
-  background-color: #f0f0f0;
-  color: #333333;
+/* Estilos para los iconos de los sensores */
+.sensor-box p {
+  margin: 5px 0;
 }
 
-.dark-mode {
-  background-color: #333333;
-  color: #f0f0f0;
+.temperature-icon {
+  color: #ff9800; /* Color para icono de temperatura */
+}
+
+.humidity-icon {
+  color: #03a9f4; /* Color para icono de humedad */
+}
+
+.air-quality-icon {
+  color: #4caf50; /* Color para icono de calidad del aire */
+}
+
+.co2-icon {
+  color: #f44336; /* Color para icono de CO2 */
+}
+
+.co-icon {
+  color: #9c27b0; /* Color para icono de CO */
+}
+
+.temperature-icon,
+.humidity-icon,
+.air-quality-icon,
+.co2-icon,
+.co-icon {
+  margin-right: 5px;
+}
+
+/* Estilos para el footer */
+footer {
+  background-color: #202c3d; /* Fondo del footer */
+  color: #fff; /* Color del texto del footer */
+  text-align: center;
+  padding: 0px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 0px; /* Margen desde abajo */
+  margin-top: 0px; /* Margen desde arriba */
+}
+
+footer a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #fff;
+}
+
+.battery-progress {
+  width: 100%;
+  height: 20px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.battery-bar {
+  height: 100%;
+  border-radius: 5px;
+  width: 0%;
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+/*Estilo Nivel de Bateria*/
+
+
+body{
+  background-color:rgb(38, 38, 73)
+}
+.conte_battery{
+  height:300px;
+  width: 250px;
+  margin: 100px auto;
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0 0 2px #fff;
+ background-color:rgb(255, 255, 255,0.1);
+  color: #fff;
+  text-align: center;
+  font-family: sans-serif;
+  backdrop-filter: blur(25px);
+  padding-top: 2px;
+}
+.box_batery{
+  position: relative;
+  height:100px;
+  width: 130px;
+  margin:auto; 
+}
+.carga {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrar verticalmente */
+  align-items: center; /* Centrar horizontalmente */
+  height: 100%; /* Ajusta la altura según sea necesario */
+  position: relative; /* Añadido para que los elementos absolutos sean relativos a este contenedor */
+}
+
+.percentage {
+  position: absolute; /* Cambiado a posición absoluta para colocar dentro de .carga */
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  color: #fff; /* Ajusta el color del texto según sea necesario */
+}
+
+
+.progress{
+  margin-left: 2px;
+
+  height:50%;
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  display: block;
+  border-radius: 5px;
+  width: 0; /* Inicialmente sin progreso */
+  background-color: rgb(255, 0, 0); /* Color inicial para evitar flickering */
+  transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.battery {
+  height: 50px;
+  width: 126.5px;
+  border: 3px solid #fff;
+  position: absolute;
+  border-radius: 10px;
+}
+
+.battery::after {
+  content: "";
+  position: absolute;
+  height: 13px;
+  width: 11px;
+  border-radius: 0 3px 3px 0;
+  background-color: #fff;
+  left: 100%;
+  top: 38%;
+}
+
+.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

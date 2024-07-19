@@ -6,13 +6,17 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* Estilos para el encabezado */
 header {
-  background-color: #f0f0f0;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
+    background-color: #f1f1f1;
+    color: rgb(57, 116, 179);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Asegura que el menú esté por encima del contenido */
 }
 
 .logo {
@@ -30,7 +34,7 @@ header {
   display: inline-block;
   width: 40px;
   height: 24px;
-  margin-right: 20px;
+  margin-left: 5%;
 }
 
 .switch input { 
@@ -38,6 +42,31 @@ header {
   width: 0;
   height: 0;
 }
+
+@media (max-width: 390px) {
+
+ 
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 24px;
+      margin-left: 20%;
+    }
+  }
+
+  @media (max-width: 430x) {
+
+ 
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 24px;
+      margin-left: 50%;
+    }
+  }
+
 
 .slider {
   position: absolute;
@@ -143,6 +172,7 @@ nav {
 }
 
 .sensor-container {
+  margin-bottom: 100px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between; /* Ajusta el espacio entre los sensores */

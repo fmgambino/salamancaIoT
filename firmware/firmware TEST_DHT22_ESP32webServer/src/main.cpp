@@ -17,20 +17,24 @@
 const char* ssid = "JUAREZ";
 const char* password = "CAROLINA342";
 
+// Dirección IP fija para el ESP32
+IPAddress local_IP(192, 168, 100, 184);
+IPAddress gateway(192, 168, 100, 1);
+IPAddress subnet(255, 255, 255, 0);
+
 // Inicialización del servidor web y los sensores
 WebServer server(80);
 DHT dht(DHTPIN, DHTTYPE);
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature ds18b20(&oneWire);
 
-// Variables para los sensores MQ
-int mq135Pin = 34;
-int mq9Pin = 35;
-
 void setup() {
   Serial.begin(115200);
   delay(1000);
 
+  // Configuración de la conexión WiFi con IP estática
+  WiFi.config(local_IP, gateway, subnet);
+  
   // Conexión a la red WiFi
   Serial.println();
   Serial.print("Conectando a ");
@@ -99,18 +103,18 @@ void setup() {
   });
   
   // Ruta para obtener datos del sensor DHT22
-    server.on("/dht22", HTTP_GET, []() {
-        float humidity = dht.readHumidity();
-        float temperature = dht.readTemperature();
-        if (isnan(humidity) || isnan(temperature)) {
-            Serial.println("Error al leer el sensor DHT22");
-            server.send(500, "application/json", "{\"error\":\"Error al leer el sensor DHT22\"}");
-        } else {
-            Serial.println("Datos del sensor DHT22 obtenidos correctamente");
-            String json = "{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + "}";
-            server.send(200, "application/json", json);
-        }
-    });
+  server.on("/dht22", HTTP_GET, []() {
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature();
+    if (isnan(humidity) || isnan(temperature)) {
+      Serial.println("Error al leer el sensor DHT22");
+      server.send(500, "application/json", "{\"error\":\"Error al leer el sensor DHT22\"}");
+    } else {
+      Serial.println("Datos del sensor DHT22 obtenidos correctamente");
+      String json = "{\"temperature\":" + String(temperature) + ",\"humidity\":" + String(humidity) + "}";
+      server.send(200, "application/json", json);
+    }
+  });
 
   // Ruta para obtener datos del sensor DS18B20
   server.on("/ds18b20", HTTP_GET, []() {
@@ -124,21 +128,6 @@ void setup() {
       String json = "{\"temperature\":" + String(temperature) + "}";
       server.send(200, "application/json", json);
     }
-  });
-
-  // Ruta para obtener datos del sensor MQ-135
-  server.on("/mq135", HTTP_GET, []() {
-    int airQualityPPM = analogRead(mq135Pin);
-    int airQualityCO2 = analogRead(mq135Pin); // Aquí puedes ajustar para el CO2 si tienes otra lectura
-    String json = "{\"air_quality_ppm\":" + String(airQualityPPM) + ",\"air_quality_co2\":" + String(airQualityCO2) + "}";
-    server.send(200, "application/json", json);
-  });
-
-  // Ruta para obtener datos del sensor MQ-9
-  server.on("/mq9", HTTP_GET, []() {
-    int coLevel = analogRead(mq9Pin);
-    String json = "{\"co_level\":" + String(coLevel) + "}";
-    server.send(200, "application/json", json);
   });
 
   server.begin();

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPDU®</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" href="https://i.ibb.co/hVN5hpX/favicon-Dark-smart-PDU-2.png" type="image/x-icon">
+</head>
+<body>
+    <header id="header">
+        <div class="header-left">
+            <img src="https://i.ibb.co/SQk5kwP/Smart-PDU-light-Logo.png" alt="Logo Electronica Gambino" class="logo" id="logo">
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="mode-toggle">
+            <span class="slider"></span>
+        </label>
+        <!-- Contador de reinicios -->
+        <div class="reset-counter">
+            <!-- <i class="fas fa-redo-alt reset-icon"></i>  -->
+            <span class="reset-text">Reset PDU: <span id="resetCount">--</span></span>
+            <i class="fas fa-info-circle info-icon" id="resetLogIcon"></i>
+        </div>
+        <!-- Pop-up para mostrar el log de reinicios -->
+        <div id="resetLogPopup" class="popup hidden">
+            <div class="popup-content">
+                <span class="close-btn" id="closePopup">&times;</span>
+                <h3>Registro de Reinicios</h3>
+                <div id="resetLogContent">Cargando registro...</div>
+            </div>
+        </div>
+    </div>
+        <div class="header-right">
+            <nav>
+                <div class="menu-icon" id="menu-icon">
+                    &#9776;
+                </div>
+                <ul id="nav-menu" class="nav-menu">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#devices">Devices</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="sensor-container">
+<!--             <div class="sensor-data">
+                <h1>Batería</h1>
+                <div class="box_batery">
+                    <div id="carga" class="carga center">
+                        <span class="progress"></span>
+                        <p class="percentage">0%</p>
+                    </div>
+                    <div class="battery center"></div>
+                </div>
+            </div> -->
+
+            <div class="sensor-data">
+                <h2>Datos PDU</h2>
+                <div class="sensor-box">
+                    <p><i class="fas fa-microchip device-icon">&nbsp;&nbsp;</i> Dispositivo: &nbsp;&nbsp; <span id="device">--</span></p>
+                    <p><i class="fas fa-barcode barcode-icon"></i>&nbsp;&nbsp; ID Serie PDU: &nbsp;&nbsp; <span id="id-serie-pdu">--</span></p>
+                    <p><i class="fas fa-network-wired ip-icon"></i>&nbsp;&nbsp;IP AP: &nbsp;&nbsp;<span id="ip-ap">--</span></p>
+                </div>
+            </div>
+            <div class="sensor-data">
+                <h2>Datos de Red</h2>
+                <div class="sensor-box">
+                    <p><i class="fas fa-server">&nbsp;&nbsp;</i> IP WebServer: &nbsp;&nbsp;<span id="ip-webserver">--</span></p>
+                    <p><i class="fas fa-wifi wifi-icon"></i>&nbsp;&nbspSSID WiFi: &nbsp;&nbsp;<span id="ssid-wifi">--</span></p>  
+                    <p><i class="fas fa-signal signal-icon"></i>&nbsp;&nbspSeñal de Wi-Fi: &nbsp;&nbsp;<span id="wifi-signal">--</span> %</p>                         
+                </div>
+            </div>
+
+            <div class="sensor-data">
+                <h2>Parámetros Eléctricos PDU</h2>
+                <div class="sensor-box">
+                    <p><i class="fas fa-bolt co-icon">&nbsp;&nbsp;</i>Corriente (AC): &nbsp;&nbsp;<span id="current">--</span></p>
+                    <p><i class="fas fa-bolt co-icon">&nbsp;&nbsp;</i>Voltaje (VAC): &nbsp;&nbsp;&nbsp;<span id="voltage">--</span></p>
+                    <p><i class="fas fa-bolt co-icon">&nbsp;&nbsp;</i>Potencia Aparente: &nbsp;&nbsp;&nbsp;<span id="apparent-power">--</span></p>
+                    <p><i class="fas fa-bolt co-icon">&nbsp;&nbsp;</i>Potencia Activa: &nbsp;&nbsp;&nbsp;<span id="active-power">--</span></p>
+                    <p><i class="fas fa-bolt co-icon">&nbsp;&nbsp;</i>Consumo Total: &nbsp;&nbsp;&nbsp;<span id="energy-consumption">--</span></p>
+                    <p><i class="fas fa-bolt co-icon">&nbsp;&nbsp;</i>Frecuencia (Hz): &nbsp;&nbsp;&nbsp;<span id="frequency">--</span></p>
+                    <p><i class="fas fa-bolt co-icon">&nbsp;&nbsp;</i>Factor de Potencia: &nbsp;&nbsp;&nbsp;<span id="power-factor">--</span></p>
+                </div>
+            </div>
+            
+            
+            <div class="sensor-data">
+                <h2>Ambiente</h2>
+                <div class="sensor-box">
+                    <p><i class="fas fa-thermometer-half temperature-icon">&nbsp;&nbsp;</i>Temperatura:&nbsp;&nbsp;<span id="temperature">--</span> °C</p>
+                    <p><i class="fas fa-tint humidity-icon">&nbsp;&nbsp;</i>Humedad:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="humidity">--</span> %</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="reles-container">
+            <div class="rele-box">
+                <h2>Toma 1</h2>
+                <p>
+                    <!-- Consumo: &nbsp;&nbsp;<i class="fas fa-lightbulb co-icon"></i> <span id="kw-horas1">--</span> [KW/h] -->
+                    <!-- Icono para abrir el pop-up de información -->
+                    <i class="fas fa-info-circle info-icon" id="infoPopupIcon1"></i>
+                </p>
+                <label class="switch">
+                    <input type="checkbox" id="rele1">
+                    <span class="slider rele"></span>
+                </label>
+                <i class="fas fa-lightbulb co-icon"></i>
+                
+            </div>
+            
+            <!-- Pop-up de información -->
+            <div id="infoPopup1" class="popup hidden">
+                <div class="popup-content">
+                    <span class="close-btn" id="closeInfoPopup1">&times;</span>
+                    <p>Función habilitada en nuestra versión SmartPDU PREMIUM. Contactar al WhatsApp Business 
+                        <a href="https://wa.me/543816150488" target="_blank">https://wa.me/543816150488</a> 
+                        o a nuestro email 
+                        <a href="mailto:contacto@smartpdu.online">contacto@smartpdu.online</a>.
+                        Gracias por usar nuestros servicios.
+                        Atte. Team SmartPDU, Buenos Aires, Argentina.
+                    </p>
+                </div>
+            </div>
+           
+            
+            
+            <div class="rele-box">
+                <h2>Toma 2</h2>
+                <p>Consumo: &nbsp;&nbsp;<i class="fas fa-lightbulb co-icon"></i> <span id="kw-horas2">--</span> [KW/h]</p>
+                <label class="switch">
+                    <input type="checkbox" id="rele2">
+                    <span class="slider rele"></span>
+                </label>
+            </div>
+            <div class="rele-box">
+                <h2>Toma 3</h2>
+                <p>Consumo: &nbsp;&nbsp;<i class="fas fa-lightbulb co-icon"></i> <span id="kw-horas3">--</span> [KW/h]</p>
+                <label class="switch">
+                    <input type="checkbox" id="rele3">
+                    <span class="slider rele"></span>
+                </label>
+            </div>
+            <div class="rele-box">
+                <h2>Toma 4</h2>
+                <p>Consumo: &nbsp;&nbsp;<i class="fas fa-lightbulb co-icon"></i> <span id="kw-horas4">--</span> [KW/h]</p>
+                <label class="switch">
+                    <input type="checkbox" id="rele4">
+                    <span class="slider rele"></span>
+                </label>
+            </div>
+            <div class="rele-box">
+                <h2>Toma 5</h2>
+                <p>Consumo: &nbsp;&nbsp;<i class="fas fa-lightbulb co-icon"></i> <span id="kw-horas5">--</span> [KW/h]</p>
+                <label class="switch">
+                    <input type="checkbox" id="rele5">
+                    <span class="slider rele"></span>
+                </label>
+            </div>
+            <div class="rele-box">
+                <h2>Toma 6</h2>
+                <p>Consumo: &nbsp;&nbsp;<i class="fas fa-lightbulb co-icon"></i> <span id="kw-horas6">--</span> [KW/h]</p>
+                <label class="switch">
+                    <input type="checkbox" id="rele6">
+                    <span class="slider rele"></span>
+                </label>
+            </div>
+        </div>   
+    </main>
+    <footer>
+        <p>&copy; 2024 SmartPDU® All rights reserved - Developed by <a href='https://electronicagambino.com' style='color: #ccc; text-decoration: none;'>AÚN SIN MARCA jejeje</a></p>
+    </footer>
+    <script src="script.js"></script>
+    <script src="js/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+/* Estilos Switch Toggle Modo AP */
+/* Estilos generales del switch */
+.switchAp {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+.switchAp input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 25px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 21px;
+    width: 21px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(25px);
+}
+
+/* Estilos para modo claro */
+body:not(.dark-theme) .switchAp .slider {
+    background-color: #1171d7;
+}
+
+body:not(.dark-theme) .switchAp input:checked + .slider {
+    background-color: #4CAF50;
+}
+
+body:not(.dark-theme) .switchAp .slider:before {
+    background-color: white;
+}
+
+/* Estilos para modo oscuro */
+body.dark-theme .switchAp .slider {
+    background-color: #555;
+}
+
+body.dark-theme .switchAp input:checked + .slider {
+    background-color: #66BB6A;
+}
+
+body.dark-theme .switchAp .slider:before {
+    background-color: #333;
+}
+
+
+/* ===== Tomas (Relés) ===== */
+.rele-box-Plug {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    margin: 20px;
+    border-radius: 10px;
+    background-color: #ffffff; /* Fondo para modo claro */
+    color: #333; /* Color de texto para modo claro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark .rele-box-Plug {
+    background-color: #1e1e1e; /* Fondo para modo oscuro */
+    color: #fff; /* Color de texto para modo oscuro */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Contenedor para el switch y el ícono */
+.switch-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.switchPlug {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 30px;
+    margin-right: 20px;
+}
+
+.switchPlug input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.sliderPlug {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ba0202;
+    transition: 0.4s;
+    border-radius: 25px;
+}
+
+.sliderPlug:before {
+    position: absolute;
+    content: "";
+    height: 25px;
+    width: 25px;
+    right: 25px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .sliderPlug {
+    background-color: #2196F3;
+}
+
+input:checked + .sliderPlug:before {
+    transform: translateX(25px);
+}
+
+/* Estilos para modo claro */
+body:not(.dark) .sliderPlug {
+    background-color: #d70707;
+}
+
+body:not(.dark) input:checked + .sliderPlug {
+    background-color: #4CAF50;
+}
+
+body:not(.dark) .sliderPlug:before {
+    background-color: white;
+}
+
+/* Estilos para modo oscuro */
+body.dark .sliderPlug {
+    background-color: red;
+}
+
+body.dark input:checked + .sliderPlug {
+    background-color: #66BB6A;
+}
+
+body.dark .sliderPlug:before {
+    background-color: #b0b0b0;
+}
+
+/* Estilo para el ícono de la lámpara */
+.rele-box-Plug .fa-plug {
+    font-size: 2rem;
+    color: inherit; /* Mantiene el color según el modo */
+}

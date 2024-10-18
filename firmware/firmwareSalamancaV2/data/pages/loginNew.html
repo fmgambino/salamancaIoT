@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Inicio de Sesión || Learningrobo</title>
+  <link rel="stylesheet" href="/data/css/loginNew.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="wrapper">
+      <!-- Formulario de Inicio de Sesión -->
+      <div id="login-form-container">
+        <header>Formulario de Inicio de Sesión</header>
+        <form id="login-form" action="#">
+          <div class="field email">
+            <div class="input-area">
+              <input type="text" name="username" placeholder="Nombre de Usuario">
+              <i class="icon fas fa-user"></i>
+              <i class="error error-icon fas fa-exclamation-circle"></i>
+            </div>
+            <div class="error error-txt">El nombre de usuario no puede estar en blanco</div>
+          </div>
+          <div class="field password">
+            <div class="input-area">
+              <input type="password" name="password" placeholder="Contraseña">
+              <i class="icon fas fa-lock"></i>
+              <i class="error error-icon fas fa-exclamation-circle"></i>
+            </div>
+            <div class="error error-txt">La contraseña no puede estar en blanco</div>
+          </div>
+          <div class="pass-txt"><a href="#">¿Olvidaste tu contraseña?</a></div>
+          <input type="submit" value="Iniciar Sesión" id="login">
+        </form>
+        <div class="sign-txt">¿No eres miembro? <a href="#" id="register">Regístrate ahora</a></div>
+      </div>
+      
+      <!-- Formulario de Registro -->
+      <div id="signup-form-container" style="display:none;">
+        <header>Formulario de Registro</header>
+        <form id="signup-form" action="#">
+          <div class="field email">
+            <div class="input-area">
+              <input type="text" name="username" placeholder="Nombre de Usuario">
+              <i class="icon fas fa-user"></i>
+              <i class="error error-icon fas fa-exclamation-circle"></i>
+            </div>
+            <div class="error error-txt">El nombre de usuario no puede estar en blanco</div>
+          </div>
+          <div class="field password">
+            <div class="input-area">
+              <input type="password" name="password" placeholder="Contraseña">
+              <i class="icon fas fa-lock"></i>
+              <i class="error error-icon fas fa-exclamation-circle"></i>
+            </div>
+            <div class="error error-txt">La contraseña no puede estar en blanco</div>
+          </div>
+          <input type="submit" value="Registrarse">
+        </form>
+        <div class="sign-txt">¿Ya tienes una cuenta? <a href="#" id="login">Iniciar Sesión</a></div>
+      </div>
+    </div>
+    <div class="credit">Hecho con <span style="color:tomato">❤</span> por <a href="https://www.learningrobo.com/">Learning Robo</a></div>
+  </div>
+
+  <script src="/data/js/login.js"></script>
+</body>
+</html>

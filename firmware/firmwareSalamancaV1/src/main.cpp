@@ -16,6 +16,10 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WebServer.h>
+#include <WiFiManager.h>
+#include <ESPmDNS.h>  // Biblioteca mDNS
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 #include <SPIFFS.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
@@ -37,18 +41,20 @@
 #define MQ135_PIN 32    // Pin Analógico Sensor de Gas MQ-135
 #define MQ9_PIN // Pin Analógico Sensor de Gas MQ-9
 
+WebServer server(80); //Asignacion de puerto
+WiFiManager wifiManager;
 
-// Credenciales de la red WiFi
-const char* ssid = "JUAREZ";
-const char* password = "CAROLINA342";
+String ssidAP;
+// Obtén la dirección MAC del ESP32
+String mac = WiFi.macAddress();
+const char* mDNSName = "salamandra"; // Definición global del nombre de mDNS
 
 // Dirección IP fija para el ESP32
 IPAddress local_IP(192, 168, 100, 184);
 IPAddress gateway(192, 168, 100, 1);
 IPAddress subnet(255, 255, 255, 0);
 
-// Inicialización del servidor web y los sensores
-WebServer server(80);
+// Inicialización de Sensores
 DHT dht(DHTPIN, DHTTYPE);
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature ds18b20(&oneWire);
@@ -59,6 +65,15 @@ RelayNames relayNames;
 // Declaración de la función para controlar relés
 void handleRelayControl();
 
+void redirectToLocalIP() {
+    String localIP = WiFi.localIP().toString();
+    Serial.println("Redirigiendo a: http://" + localIP);
+
+    // Envía la redirección al cliente
+    server.sendHeader("Location", "http://" + localIP, true);
+    server.send(302, "text/plain", "");
+}
+
 void setup() {
     Serial.begin(115200);
     delay(1000);
@@ -66,12 +81,36 @@ void setup() {
     // Configuración de la conexión WiFi con IP estática
     WiFi.config(local_IP, gateway, subnet);
 
+    /**** CONFIGURACION MODO AP *****
+    *********************************/
+
+    // Extrae los últimos 4 caracteres de la dirección MAC
+    String macSuffix = mac.substring(mac.length() - 8);
+    macSuffix.replace(":", ""); // Elimina los ":" del sufijo
+
+    // Crea el SSID con el sufijo de la MAC
+    String ssid = "SalamandraWiFi_" + macSuffix;
+
+    // Convertir el SSID a un array de caracteres para WiFiManager
+    char ssidChar[ssid.length() + 1];
+    ssid.toCharArray(ssidChar, ssid.length() + 1);
+
+    // Iniciar el autoConnect con el SSID modificado
+    wifiManager.autoConnect(ssidChar, "12345678");
+
+    // Configurar WiFiManager
+    wifiManager.setConfigPortalTimeout(5);  // Tiempo de espera de 5 minutos para configuración
+
+    // Callback para guardar la configuración cuando WiFi esté conectado
+    wifiManager.setSaveConfigCallback([]() {
+        Serial.println("WiFi configurado. Redirigiendo...");
+        delay(1000);
+        redirectToLocalIP();  // Redirigir a la IP local una vez conectado
+    });
+
     // Conexión a la red WiFi
     Serial.println();
     Serial.print("Conectando a ");
-    Serial.println(ssid);
-    
-    WiFi.begin(ssid, password);
     
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
@@ -83,21 +122,19 @@ void setup() {
     Serial.print("Dirección IP: ");
     Serial.println(WiFi.localIP());
 
+    // Inicializar mDNS
+    if (!MDNS.begin(mDNSName)) {
+        Serial.println("Error al iniciar mDNS. No se puede acceder a http://salamandra.local");
+    } else {
+        Serial.println("mDNS iniciado correctamente. Puedes acceder a tu ESP32 en http://salamandra.local");
+    }
+
     // Montaje del sistema de archivos SPIFFS
     if (!SPIFFS.begin(true)) {
         Serial.println("Error al montar SPIFFS");
         return;
     }
     Serial.println("SPIFFS montado correctamente");
-
-    // Cargar los nombres de los relés desde SPIFFS
-    //loadRelayNames();
-
-    // Inicializar los relés
-    //setupRelays();
-
-    // Configurar el servidor
-   // setupRelayRoutes();
 
     // Configuración del servidor para servir archivos estáticos
     server.on("/", HTTP_GET, []() {
@@ -139,8 +176,6 @@ void setup() {
         server.streamFile(file, "application/javascript");
         file.close();
     });
-
-
 
     // Incluir el archivo editNameRelays.js
     server.on("/editNameRelays.js", HTTP_GET, []() {
@@ -193,7 +228,6 @@ void setup() {
             server.send(500, "application/json", "{\"error\":\"Error al leer el DS18B20\"}");
             return;
         }
-
         String json = "{\"temperature\":" + String(temperature) + "}";
         server.send(200, "application/json", json);
     });
@@ -201,17 +235,22 @@ void setup() {
     // Ruta para obtener datos del sensor MQ-135
     server.on("/mq135", HTTP_GET, []() {
         int analogValue = analogRead(MQ135_PIN);
-        float airQuality = analogValue * (3.3 / 4095.0);
+        float airQuality = analogValue * (3.3 / 4095.0); // Convertir el valor analógico a concentración
         String json = "{\"air_quality\":" + String(airQuality) + "}";
         server.send(200, "application/json", json);
     });
 
+    // Iniciar servidor HTTP
     server.begin();
+    Serial.println("Servidor HTTP iniciado");
+
+    // Inicializar sensores
+    dht.begin();
+    ds18b20.begin();
 }
 
 void loop() {
-    server.handleClient(); // Maneja las peticiones del cliente
-    delay(100);
+    server.handleClient();  // Manejo de solicitudes del cliente
 }
 
 // Implementación de la función handleRelayControl

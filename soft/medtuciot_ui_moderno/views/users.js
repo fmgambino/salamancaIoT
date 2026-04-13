@@ -1,0 +1,1 @@
+export async function renderUsersView() { return '<section class="center-screen"><div class="auth-card"><h1 class="auth-title">Módulo en actualización</h1><p class="auth-subtitle">Este módulo fue simplificado dentro de la nueva UI/UX.</p><a class="btn btn-primary" href="#/admin/dashboard">Volver</a></div></section>'; }

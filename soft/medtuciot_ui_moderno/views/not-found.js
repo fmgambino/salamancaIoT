@@ -1,0 +1,1 @@
+export function renderNotFoundView() { return `<section class="center-screen"><div class="auth-card"><h1 class="auth-title">Página no encontrada</h1><p class="auth-subtitle">La ruta solicitada no existe.</p><a class="btn btn-primary" href="#/login">Ir al inicio</a></div></section>`; }

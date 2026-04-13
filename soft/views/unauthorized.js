@@ -1,0 +1,1 @@
+export function renderUnauthorizedView() { return `<section class="center-screen"><div class="auth-card"><h1 class="auth-title">Acceso no autorizado</h1><p class="auth-subtitle">No tenés permisos para entrar a este módulo.</p><a class="btn btn-primary" href="#/admin/dashboard">Volver al dashboard</a></div></section>`; }

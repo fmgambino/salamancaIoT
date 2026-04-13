@@ -1,0 +1,53 @@
+:root {
+  --bg: #071019;
+  --bg-soft: #0d1823;
+  --surface: rgba(17, 27, 39, 0.92);
+  --surface-2: rgba(21, 34, 49, 0.88);
+  --surface-3: rgba(255,255,255,0.03);
+  --text: #f5f7fb;
+  --text-soft: #9db1c7;
+  --text-muted: #6f8197;
+  --border: rgba(255,255,255,0.08);
+  --primary: #12d6a0;
+  --primary-2: #11b98a;
+  --info: #38bdf8;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --shadow: 0 24px 60px rgba(0,0,0,0.32);
+  --radius: 22px;
+  --sidebar-width: 272px;
+  --sidebar-collapsed: 78px;
+  --topbar-height: 84px;
+  --font: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: var(--font);
+  background:
+    radial-gradient(circle at top right, rgba(18,214,160,0.08), transparent 20%),
+    radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 24%),
+    var(--bg);
+  color: var(--text);
+}
+a { text-decoration: none; color: inherit; }
+button, input, textarea, select { font: inherit; }
+img { max-width: 100%; display: block; }
+code { font-family: ui-monospace, SFMono-Regular, monospace; }
+.hidden { display: none !important; }
+.page-title { margin: 0; font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; }
+.page-subtitle { color: var(--text-soft); margin: 8px 0 0; }
+.content-stack { display: grid; gap: 20px; }
+.grid { display: grid; gap: 18px; }
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.center-screen { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.muted { color: var(--text-soft); }
+.text-right { text-align: right; }
+.text-gradient { background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; color: transparent; }
+.page-header { display: flex; justify-content: space-between; gap: 18px; align-items: flex-start; }
+.section-title { margin: 0 0 12px; font-size: 1.25rem; }
+.overlay {
+  position: fixed; inset: 0; background: rgba(1,6,13,.6); backdrop-filter: blur(10px); z-index: 200;
+}

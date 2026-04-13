@@ -1,0 +1,7 @@
+export const APP_CONFIG = {
+  APP_NAME: 'MedTuCIoT',
+  SUPABASE_URL: 'https://TU-PROYECTO.supabase.co',
+  SUPABASE_ANON_KEY: 'TU-ANON-KEY',
+  DEFAULT_THEME: 'dark',
+  ROUTE_PREFIX: '#'
+};

@@ -1,0 +1,8 @@
+.table-card { overflow: hidden; }
+.table-wrap { overflow: auto; }
+.app-table { width: 100%; min-width: 900px; border-collapse: collapse; }
+.app-table th, .app-table td { padding: 15px 16px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
+.app-table th { color: var(--text-muted); background: var(--surface-2); text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; }
+.table-toolbar { padding: 18px; border-bottom: 1px solid var(--border); }
+.table-actions { display: flex; gap: 8px; }
+.table-footer { display: flex; justify-content: space-between; gap: 12px; align-items: center; padding: 16px 18px; }
